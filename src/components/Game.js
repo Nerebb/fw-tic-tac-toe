@@ -50,8 +50,10 @@ function Game() {
       return e.preventDefault();
     }
     //Push to Array
-    squares[i.id].player = xIsNext ? "X" : "O";
-    history.push(squares[i.id]);
+    if (!squares[i.id].player) {
+      squares[i.id].player = xIsNext ? "X" : "O";
+      history.push(squares[i.id]);
+    }
     //Switch player
     setXIsNext(!xIsNext);
   };
@@ -59,11 +61,11 @@ function Game() {
   //Handle history
   const handleHistory = (i) => {
     const curHis = history.filter((item) => !history.slice(i).includes(item));
-
     squares.map((item) =>
       !curHis.includes(item) ? (item.player = null) : item
     );
 
+    curHis.length % 2 === 0 ? setXIsNext(true) : setXIsNext(false);
     setHistory(curHis);
   };
   //Restart game
